@@ -7,14 +7,19 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 @Entity
 public class Job 
 {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
+	
 	private String jobTitle;
+	
 	private String jobDescription;
+	
 	private String yrsOfExp;
 	private String skillsRequired;
 	private String salary;

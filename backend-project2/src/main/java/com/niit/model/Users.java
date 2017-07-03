@@ -2,6 +2,8 @@ package com.niit.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -11,21 +13,29 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class Users 
 {
 	@Id
-	@NotEmpty
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int id;
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 	private String firstname;
-	@NotEmpty
+	
 	private String lastname;
-	@NotEmpty
+	
 	private String email;
-	@NotEmpty
+	
 	private String username;
-	@NotEmpty
+	
 	private String password;
-	@NotEmpty
+
 	private String role;
 	@Column(name="on_line")
 	private boolean online;
-	@NotEmpty
+
 	private boolean enabled;
 	public String getFirstname() 
 	{

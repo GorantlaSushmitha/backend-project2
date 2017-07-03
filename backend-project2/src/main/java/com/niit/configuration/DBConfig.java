@@ -11,8 +11,11 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
 
+import com.niit.dao.JobDao;
+import com.niit.dao.JobDaoImpl;
 import com.niit.dao.UsersDao;
 import com.niit.dao.UsersDaoImpl;
+import com.niit.model.Job;
 import com.niit.model.Users;
 
 public class DBConfig
@@ -47,6 +50,7 @@ public class DBConfig
 		sessionBuilder.addProperties(getHibernateProperties());
 
 		sessionBuilder.addAnnotatedClasses(Users.class);
+		sessionBuilder.addAnnotatedClasses(Job.class);
 		/*  sessionBuilder.addAnnotatedClasses(Blog.class);
 		  sessionBuilder.addAnnotatedClasses(Friend.class);
 		  sessionBuilder.addAnnotatedClasses(Job.class);
@@ -70,9 +74,15 @@ public class DBConfig
 	}
 	
 	@Autowired
-	@Bean(name="personDao")
-	public UsersDao getpersonDAO(SessionFactory sessionFactory)
+	@Bean(name="usersDao")
+	public UsersDao getusersDAO(SessionFactory sessionFactory)
 	{
 		return new UsersDaoImpl();
+	}
+	@Autowired
+	@Bean(name="jobDao")
+	public JobDao getjobDAO(SessionFactory sessionFactory)
+	{
+		return new JobDaoImpl();
 	}
 }

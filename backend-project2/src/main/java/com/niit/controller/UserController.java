@@ -1,10 +1,9 @@
 package com.niit.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,39 +15,26 @@ import com.niit.dao.UsersDao;
 import com.niit.model.Users;
 import com.niit.model.Error;
 
+
+
 @RestController
 public class UserController 
 {
     @Autowired
     
     private UsersDao usersDao;
-    @RequestMapping(value="/registration",method=RequestMethod.POST)
     
-    public ResponseEntity<?> registration(@RequestBody Users user)
-    {
-        try
-        {
-            user.setEnabled(true);
-            List<Users> users=usersDao.getAllUsers();
-            //for(T var:collection)
-            for(Users u:users)
-            {
-                if(u.getUsername().equals(user.getUsername()))
-                {
-                    Error error=new Error(2,"Username already exists");
-                    return new ResponseEntity<Error>(error,HttpStatus.INTERNAL_SERVER_ERROR);    
-                }
-            }
-            System.out.println(user.getUsername() + "" + user.getFirstname() + "" + user.getEmail());
-            usersDao.registration(user);
-            return new ResponseEntity<Void>(HttpStatus.CREATED);
-        }
-        catch(Exception e)
-        {
-            Error error=new Error(1,"cannot register user details");
-            return new ResponseEntity<Error>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }    
+    @RequestMapping(value="/register",method=RequestMethod.PUT)
+   public ResponseEntity<Void> createUser(@RequestBody Users user) {
+        System.out.println("Creating User " + user.getFirstname());
+ 
+ 
+        usersDao.registration(user);
+ 
+        HttpHeaders headers = new HttpHeaders();
+        return new ResponseEntity<Void>(headers, HttpStatus.OK);
+    }
+ 
 
 	@RequestMapping(value="/login",method=RequestMethod.POST)
 	public ResponseEntity<?> login(@RequestBody Users users,HttpSession session)
@@ -68,6 +54,15 @@ public class UserController
 		    return new ResponseEntity<Users>(validUser,HttpStatus.OK);    
 		}
 	}
+   /* @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public ResponseEntity<?> login(@RequestBody Users users,HttpSession session) {
+    	 Users validUser=usersDao.login(users);
+    	 validUser.setEnabled(true);
+    	 validUser.setOnline(true);
+    	 validUser=usersDao.updateUser(validUser);
+		    session.setAttribute("user", validUser);
+		    return new ResponseEntity<Users>(validUser,HttpStatus.OK); 
+    }*/
 	
 	@RequestMapping(value="/logout",method=RequestMethod.GET)
 	public ResponseEntity<?>logout(HttpSession session)
