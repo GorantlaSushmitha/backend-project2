@@ -43,31 +43,29 @@ public class BlogPostDaoImpl implements BlogPostDao
 		return blogPost;
 	}
 
-	public void updateBlogPost(BlogPost blogPost) {
-		
+	public void updateBlogPost(BlogPost blogPost) 
+	{	
 		Session session=sessionFactory.openSession();
 		session.update(blogPost);
 		session.flush();
-		session.close();
-		
+		session.close();	
 	}
 	
-public void addBlogComment(BlogComment blogComment) {
-		
+	public void addBlogComment(BlogComment blogComment) 
+	{	
 		Session session=sessionFactory.openSession();
 		session.save(blogComment);
 		session.flush();
 		session.close();
 	}
 
-public List<BlogComment> getBlogComments(int blogId) {
-	
-	Session session=sessionFactory.openSession();
-	Query query=session.createQuery("from BlogComment where blogPost.id="+blogId);
-	List<BlogComment> blogComments=query.list();
-	System.out.println(blogComments);
-	session.close();
-	return blogComments;
-
-}
+	public List<BlogComment> getBlogComments(int blogId) 
+	{
+		Session session=sessionFactory.openSession();
+		Query query=session.createQuery("from BlogComment where blogPost.id="+blogId);
+		List<BlogComment> blogComments=query.list();
+		System.out.println(blogComments);
+		session.close();
+		return blogComments;
+	}
 }
